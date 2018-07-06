@@ -26,4 +26,30 @@ def classify0(inx, dataset, labels, k):
     return sortedDistIndicies[0][0]
 
 
+def file2matrix(filename):
+    fr = open(filename)
+    arrayOLines = fr.readlines()
+    numberOfLines = len(arrayOLines)
+    returnMat = zeros((numberOfLines, 3))
+    classLabelVector = []
+    index = 0
+    for line in arrayOLines:
+        line = line.strip()
+        listFromLine = line.split('\t')
+        returnMat[index, :] = listFromLine[0:3]
+        classLabelVector.append(listFromLine[-1])
+        index += 1
+    return returnMat, classLabelVector
+
+
+def autoNorm(dataset):
+    minVals = dataset.min(0)
+    maxVals = dataset.max(0)
+    ranges = maxVals - minVals
+    normDataSet = zeros(shape(dataset))
+    m = dataset.shape[0]
+    normDataSet = dataset - minVals
+    normDataSet = normDataSet/ranges
+    return normDataSet, ranges, minVals
+
 
